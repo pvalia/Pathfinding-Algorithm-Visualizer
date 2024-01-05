@@ -1,29 +1,58 @@
+// Performs A* algorithm; returns *all* nodes in the order
+// in which they were visited. Also makes nodes point back to their
+// previous node, effectively allowing us to compute the shortest path
+// by backtracking from the finish node.
 export function astar(grid, startNode, finishNode) {
     const visitedNodesInOrder = [];
     startNode.distance = 0;
+    startNode.heuristic = calculateHeuristic(startNode, finishNode);
     const unvisitedNodes = getAllNodes(grid);
+  
     while (!!unvisitedNodes.length) {
-      sortNodesByDistance(unvisitedNodes);
+      sortNodesByDistanceAndHeuristic(unvisitedNodes);
       const closestNode = unvisitedNodes.shift();
+  
+      // If we encounter a wall, we skip it.
       if (closestNode.isWall) continue;
+  
+      // If the closest node is at a distance of infinity,
+      // we must be trapped and should therefore stop.
       if (closestNode.distance === Infinity) return visitedNodesInOrder;
+  
       closestNode.isVisited = true;
       visitedNodesInOrder.push(closestNode);
+  
       if (closestNode === finishNode) return visitedNodesInOrder;
-      updateUnvisitedNeighbors(closestNode, grid);
+  
+      updateUnvisitedNeighbors(closestNode, finishNode, grid);
     }
   }
   
-  function sortNodesByDistance(unvisitedNodes) {
-    unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
+  function sortNodesByDistanceAndHeuristic(unvisitedNodes) {
+    unvisitedNodes.sort(
+      (nodeA, nodeB) =>
+        nodeA.distance + nodeA.heuristic - (nodeB.distance + nodeB.heuristic)
+    );
   }
   
-  function updateUnvisitedNeighbors(node, grid) {
+  function updateUnvisitedNeighbors(node, finishNode, grid) {
     const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
     for (const neighbor of unvisitedNeighbors) {
-      neighbor.distance = node.distance + 1;
-      neighbor.previousNode = node;
+      const tentativeDistance = node.distance + 1;
+      if (tentativeDistance < neighbor.distance) {
+        neighbor.distance = tentativeDistance;
+        neighbor.heuristic = calculateHeuristic(neighbor, finishNode);
+        neighbor.totalCost = neighbor.distance + neighbor.heuristic;
+        neighbor.previousNode = node;
+      }
     }
+  }
+  
+  function calculateHeuristic(node, finishNode) {
+    // Using Manhattan distance as the heuristic (more efficient for a grid)
+    const dx = Math.abs(node.col - finishNode.col);
+    const dy = Math.abs(node.row - finishNode.row);
+    return dx + dy;
   }
   
   function getUnvisitedNeighbors(node, grid) {
@@ -46,7 +75,9 @@ export function astar(grid, startNode, finishNode) {
     return nodes;
   }
   
-  export function getNodesInShortestPathOrder(finishNode) {
+  // Backtracks from the finishNode to find the shortest path.
+  // Only works when called *after* the dijkstra method above.
+  export function getNodesInShortestPathOrder_a(finishNode) {
     const nodesInShortestPathOrder = [];
     let currentNode = finishNode;
     while (currentNode !== null) {

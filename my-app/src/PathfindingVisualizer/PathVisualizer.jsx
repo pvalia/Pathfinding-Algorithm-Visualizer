@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Node from './Node/Node';
 import {dijkstra, getNodesInShortestPathOrder} from '../Algorithms/dijkstra';
-import {astar, getNodesInShortestPathOrder2} from '../Algorithms/Astar';
+import {astar, getNodesInShortestPathOrder_a} from '../Algorithms/Astar';
 
 import './PathVisualizer.css';
 
@@ -106,7 +106,7 @@ export default class PathfindingVisualizer extends Component {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
-          this.animateShortestPath2(nodesInShortestPathOrder);
+          this.animateShortestPath(nodesInShortestPathOrder);
         }, 10 * i);
         return;
       }
@@ -126,7 +126,7 @@ export default class PathfindingVisualizer extends Component {
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
     const visitedNodesInOrder = astar(grid, startNode, finishNode);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder2(finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder_a(finishNode);
     this.animateAstar(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
@@ -170,10 +170,10 @@ export default class PathfindingVisualizer extends Component {
                     <img className="algo-box"alt="" src="/algo-box.png"></img>
                     <div className="text">A* Algorithm</div>
                 </div> 
-                <div className="Xalgo" onClick={() => this.visualizeDijkstra()}>
+                {/* <div className="Xalgo" onClick={() => this.visualizeDijkstra()}>
                     <img className="algo-box"alt="" src="/algo-box.png"></img>
                     <div className="text">X Algorithm</div>
-                </div> 
+                </div>  */}
             </div>
             <div className="ClearGrid-parent" onClick={() => this.ClearGrid()}>
                 <img className="algo-box"alt="" src="/cleargrid.png"></img>
@@ -224,17 +224,19 @@ const getInitialGrid = () => {
 };
 
 const createNode = (col, row) => {
-  return {
-    col,
-    row,
-    isStart: row === START_NODE_ROW && col === START_NODE_COL,
-    isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
-    distance: Infinity,
-    isVisited: false,
-    isWall: false,
-    previousNode: null,
+    return {
+        col,
+        row,
+        isStart: row === START_NODE_ROW && col === START_NODE_COL,
+        isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+        distance: Infinity,
+        heuristic: 0, // Initialize heuristic to 0
+        totalCost: Infinity, // Initialize totalCost to Infinity
+        isVisited: false,
+        isWall: false,
+        previousNode: null,
+    };
   };
-};
 
 const getNewGridWithWallToggled = (grid, row, col) => {
   const newGrid = grid.slice();
