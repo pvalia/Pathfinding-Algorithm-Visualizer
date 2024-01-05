@@ -1,0 +1,101 @@
+.node {
+    width: 30px;
+    height: 30px;
+    outline: 0.5px solid rgb(136, 135, 134);
+    display: inline-block;
+    margin: 0; 
+  }
+  
+  .node-finish {
+    background-color: red;
+  }
+  
+  .node-start {
+    background-color:rgb(46, 188, 49);
+  }
+  
+  .node-visited {
+    animation-name: visitedAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+  }
+  
+  @keyframes visitedAnimation {
+    0% {
+      transform: scale(0.3);
+      background-color: rgba(60, 17, 78, 0.75);
+      border-radius: 100%;
+    }
+  
+    50% {
+      background-color: rgba(104, 34, 122, 0.75);
+    }
+  
+    75% {
+      transform: scale(1.2);
+      background-color: rgba(129, 51, 149, 0.75);
+    }
+  
+    100% {
+      transform: scale(1);
+      background-color: rgba(183, 66, 213, 0.75);
+    }
+  }
+  
+  .node-wall {
+    background-color: rgb(67, 67, 68);
+  }
+  
+  .node-shortest-path {
+    animation-name: shortestPath;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+  }
+  
+  @keyframes shortestPath {
+    0% {
+      transform: scale(0.6);
+      background-color: rgb(255, 254, 106);
+    }
+  
+    50% {
+      transform: scale(1.2);
+      background-color: rgb(255, 254, 106);
+    }
+  
+    100% {
+      transform: scale(1);
+      background-color: rgb(255, 254, 106);
+    }
+  }
+
+  .clear-grid {
+    animation-name: cleargrid;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+  }
+ @keyframes cleargrid {
+    0% {
+    transform: scale(0.6);
+    background-color: #9a9998;
+    }
+    100% {
+    transform: scale(1);
+    background-color: #9a9998;
+    }
+}
