@@ -3,6 +3,10 @@ import Node from './Node/Node';
 import {dijkstra, getNodesInShortestPathOrder} from '../Algorithms/dijkstra';
 import {astar, getNodesInShortestPathOrder_a} from '../Algorithms/Astar';
 
+import logo from "../images/logo.png";
+import algoBox from '../images/algo-box.png';
+import clearGrid from '../images/cleargrid.png';
+
 import './PathVisualizer.css';
 
 const START_NODE_ROW = 10;
@@ -160,14 +164,14 @@ export default class PathfindingVisualizer extends Component {
     return (
     <div className="main">
         <div className="header">
-            <img className="logo" alt="" src="/logo.png" />
+            <img className="logo" alt="" src={logo} />
             <div className="buttons">
                 <div className="Dalgo" onClick={() => this.visualizeDijkstra()}>
-                    <img className="algo-box"alt="" src="/algo-box.png"></img>
+                    <img className="algo-box" alt="" src={algoBox} />
                     <div className="text1">Dijkstra's Algorithm</div>
                 </div> 
                 <div className="Aalgo" onClick={() => this.visualizeAstar()}>
-                    <img className="algo-box"alt="" src="/algo-box.png"></img>
+                    <img className="algo-box"alt="" src={algoBox}/>
                     <div className="text">A* Algorithm</div>
                 </div> 
                 {/* <div className="Xalgo" onClick={() => this.visualizeDijkstra()}>
@@ -176,7 +180,7 @@ export default class PathfindingVisualizer extends Component {
                 </div>  */}
             </div>
             <div className="ClearGrid-parent" onClick={() => this.ClearGrid()}>
-                <img className="algo-box"alt="" src="/cleargrid.png"></img>
+                <img className="algo-box"alt="" src={clearGrid}/>
                 <div className="text2">Clear Grid</div>
             </div> 
         </div>
